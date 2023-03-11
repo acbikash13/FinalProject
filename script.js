@@ -1,3 +1,34 @@
+let database = {
+    "click": "",
+    "user1": {
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "21": 0,
+      "22": 0,
+      "23": 0,
+      "24": 0,
+      "25": 0,
+      "31": 0,
+      "32": 0,
+      "33": 0,
+      "34": 0,
+      "35": 0,
+      "41": 0,
+      "42": 0,
+      "43": 0,
+      "44": 0,
+      "45": 0,
+      "51": 0,
+      "52": 0,
+      "53": 0,
+      "54": 0,
+      "55": 0
+    }
+  };
+documentId = "1083471290496729088"
 
 // element that gets the done Button
 doneButton = document.getElementById("done");
@@ -16,34 +47,36 @@ let matrix = [[false,false,false,false,false],
               [false,false,false,false,false],
               [false,false,false,false,false]] ;
 
-function checkWinner(matrix){
-    // search rows
-    for(let i = 0; i <4 ; i++){    // for rows
-        count = 0;
-        for(let j = 0; j< 5 ; j++){                  // for columns
-            if(matrix[i][j] == true){
-                count = count +1 ;
-                if(bingoCount === 5){
-                    return true;
-                }
-            }
-        }
-        if (count === 5){
-            bingoCount = bingoCount + 1;
-        }     
-    }
-    // search columns
+// function checkWinner(matrix){
+//     // search rows
+//     for(let i = 0; i <4 ; i++){    // for rows
+//         count = 0;
+//         for(let j = 0; j< 5 ; j++){                  // for columns
+//             if(matrix[i][j] == true){
+//                 count = count +1 ;
+//                 if(bingoCount === 5){
+//                     return true;
+//                 }
+//             }
+//         }
+//         if (count === 5){
+//             bingoCount = bingoCount + 1;
+//         }     
+//     }
+//     // search columns
 
-    // search diagnols
-
-
+//     // search diagnols
 
 
-    if(bingoCount === 5){
-        return true;
-    }
 
-}
+
+//     if(bingoCount === 5){
+//         return true;
+//     }
+
+// }
+
+
 
 let isDone= false;        // isDone checks whether the selemts are set to non editable or not.
 //code to set the numbers when clicked on the done button. This will not let change the numbers 
@@ -62,11 +95,30 @@ function done(){
         for(let i = 0; i < inputs.length; i++){  
             inputs[i].addEventListener('click',function(){
                     inputs[i].style.backgroundColor = 'purple';
-                    let row = parseInt(inputs[i].getAttribute('row-index'));
-                    let column = parseInt(inputs[i].getAttribute('column-index'));
+                    // this gets the index of the cell we click, i.e row and column,
+                    let row = (inputs[i].getAttribute('row-index'));
+                    let column = (inputs[i].getAttribute('column-index'));
+                    var jsonObject;
+                    // we save the index of the 
+                    let key = (row).concat((column));
+                    console.log(key);
+                    axios.get('https://jsonblob.com/api/jsonBlob/1083471290496729088').then(function(response){
+                        jsonObject = response.data;
+                        console.log(jsonObject);
+                        // jsonObject.user1[key] = 1;
+                    })
+                    axios.put('https://jsonblob.com/api/jsonBlob/1083471290496729088', {
+                    jsonObject
+                    }).
+                    then(function(response){
+                        console.log(response);
+                    })
+                    .catch(function(error){
+                        console.log(error)
+                    });
                     matrix[row][column] = true;
                     // run the algorithm to check 
-                    console.log(matrix);
+                    //console.log(matrix);
                     if(checkWinner(matrix)){
                         //write some codes that stops the game and displays
                     }
@@ -74,7 +126,7 @@ function done(){
         }
     }
     }
-    console.log(matrix)
+    console.log(matrix);
 // this block of code is to cross the numbers whenever the users clicks on the numbers,or we can just change the color of the blocks.
 // First we have to make sure, the numbers are set Done, or the Done button is clicked.
 //does not work when I check with isDone === true is not updated to true even though the required event is triggered.
@@ -101,3 +153,7 @@ function fill(){
 
 // Now once the digits are set, we have to find a way to cross the numbers
 // once the numbers are crossed, we have to find a way to store the numbers, maybe in a  matrix and keep track of all the numbers that have been crossed.
+
+
+
+// code that encorporates the JSONBlob as well.
