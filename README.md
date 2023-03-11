@@ -1,6 +1,8 @@
 # Midterm
 Bikash Acharya 
 Manogya Aryal
+Abhishek Shrestha
+Gaurav Upreti
 ASE 220 
 Midterm document 
 Professor Caprusso 
