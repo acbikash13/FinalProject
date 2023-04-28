@@ -14,7 +14,9 @@ form.addEventListener("submit", function(event){
         firstName: firstName,
         lastName: last_name,
         age: age_input,
-        email: email_input
+        email: email_input,
+        password:passwordInput,
+        phone: phoneInput
       })
       .then(function (response) {
         console.log(response);
