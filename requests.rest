@@ -2,9 +2,9 @@ POST http://localhost:8080/api/auth/signup
 Content-Type: application/json
 
 {
-    "email": "testExpress123@gmail.com",
-    "password":"test 1",
-    "firstName" :"Bikash",
-    "lastName" : "acharya",
+    "email": "pragyan@gmail.com",
+    "password":"pragyan123",
+    "firstName" :"Pragyan",
+    "lastName" : "B",
     "age":22
 }
