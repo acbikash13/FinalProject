@@ -32,13 +32,6 @@ async function find(db,database,collection,criteria){
   //console.log(result)
   return result;
 }
-app.post('/',async function(req,res){
-	console.log(req.body);
-	let result=await insert(db,'myWebsite','users',req.body)
-	result=await find(db,'myWebsite','users',{})
-	res.json(result)
-})
-
 async function start(){
 	db=await connect()
 	console.log('mongoDB connected')
@@ -53,90 +46,21 @@ start()
 app.post('/api/auth/signup',(req,res)=>{
 	const databaseName = "BingoGame";
 	const collectionName = "users";
-	if(find(db,databaseName,collectionName,{username: req.body.email}) >0 ) {
+	if((find(db,databaseName,collectionName,{username:req.body.email},{email:1}) >0 )) {
 		console.log("User Exists!")
 		res.status(406).json({message:'User already exists'});
 	}
 	else {
 		req.body.password=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'');
 		insert(db,databaseName,collectionName, req.body);
-		res.send(__dirname + "/public/FrontEnd/html/login.html");
+		res.sendFile(__dirname + "/public/FrontEnd/html/login.html");
+		res.status(201).json({message:'User created'})
+		
 	}
-	// collection().find({username:email}).toArray(function(err, result){
-	// 	if (err) {
-	// 		console.log(err)
-	// 	}
-	// 	console.log("Inside the database.collection")
-	// 	if(result.length>0) {
-	// 		console.log("User Exists!")
-	// 		res.status(406).json({message:'User already exists'});}
-	// 	else{
-	// 		req.body.password=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')
-	// 		database.collection('users').insertOne(req.body,function(err,result){
-	// 			if (err) throw err
-	// 			res.status(201).json({message:'User created'})
-	// 		})
-	// 	}
-	// })
-//   console.log("before sending file");
-//   res.sendFile(__dirname + "/public/FrontEnd/html/login.html");
-//   console.log("after sending file");
 })
 
 
 
-
-
-
-
-// client.connect(function(err, db) {
-// 	if (err) {
-// 	  console.log("error")
-// 	  console.error(err);
-// 	}
-// 	console.log("Connected to database")
-// 	database = db.db('BingoGame')
-// 	database.collection('users').find({}).toArray(function(err, result) {
-// 	  if (err) {
-// 		console.error(err);
-// 	  } else {
-// 		app.listen(port, async () => {
-// 		  console.log(`Example app listening on port ${port}`)
-// 		})
-// 	  }
-// 	})
-//   }).catch((err) => {
-// 	console.error(err);
-//   });
-  
-
-
-// // const { MongoClient, ServerApiVersion } = require('mongodb');
-// // const uri = "mongodb+srv://<username>:<password>@acharyab2.wg17b1q.mongodb.net/?retryWrites=true&w=majority";
-
-// // // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-// // const client = new MongoClient(uri, {
-// //   serverApi: {
-// //     version: ServerApiVersion.v1,
-// //     strict: true,
-// //     deprecationErrors: true,
-// //   }
-// // }); 
-// // async function run() {
-// //   try {
-// //     // Connect the client to the server	(optional starting in v4.7)
-// //     await client.connect();
-// //     // Send a ping to confirm a successful connection
-// //     database = await client.db("BingoGame");
-// //     console.log("Pinged your deployment. You successfully connected to MongoDB!");
-// //   } finally {
-// //     // Ensures that the client will close when you finish/error
-// //     app.listen(port,async () => {
-// // 		console.log(`Example code running on port ${port}`);
-// // 	})
-// //   }
-// // }
-// // run().catch(console.dir);
 // async function checkUser(token){
 // 	let result=await database.collection('users').find({jwt:token},{_id:1}).toArray();
 // 	if(result.length>0){
@@ -166,10 +90,10 @@ app.post('/api/auth/signup',(req,res)=>{
 // 		}
 // 	})
 // })
-// app.get('/index.html',(req,res) =>{
-//     res.sendFile('game.html');
+app.get('/game',(req,res) =>{
+    res.sendFile('/FrontEnd/html/game.html');
 
-// })
+})
 // app.get('/',(req,res)=>{
 //   res.send('index.html');
 // })
