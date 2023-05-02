@@ -6,10 +6,10 @@ const port= 3000;
 const url=require('url');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const fs= require('fs');
-// Abhishek
-const uri = "mongodb+srv://abhishekshrestha5125:10f67hk4AbIdpxfp@clustor1a.mrjuys9.mongodb.net/?retryWrites=true&w=majority";
+// // Abhishek
+// const uri = "mongodb+srv://abhishekshrestha5125:10f67hk4AbIdpxfp@clustor1a.mrjuys9.mongodb.net/?retryWrites=true&w=majority";
 // Bikash
-// const uri = "mongodb+srv://acharyab2:Iamcosmos@acharyab2.wg17b1q.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://acharyab2:Iamcosmos@acharyab2.wg17b1q.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
@@ -63,15 +63,31 @@ app.post('/api/auth/login',(req,res)=>{
 	client.connect(function(err,db){
 		const database = db.db("BingoGame");
 		database.collection('users').find({email:req.body.email},{email:1,password:1}).toArray(function(err, result){			
-			if(result.length==0) {
-				res.status(406).json({message:'User is not registered'});
-			} else {
-				if(result[0].password!=req.body.password) {
-					res.status(406).json({message:'Wrong password'});
-				} else {
-					res.status(200).redirect('../game.html');
+			if (err) throw err
+			if(result.length==0) res.status(406).json({message:'User is not registered'})
+			else{
+				if(result[0].password != bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')) return res.status(406).json({message:'Wrong password'})
+				else{
+					userId=result[0]._id.toString().replace('New ObjectId("','').replace('")','')
+					console.log(userId)
+					let token=jwt.sign({id:userId},jwtsalt,{expiresIn:jwt_expiration})
+					database.collection('users').updateOne({_id:ObjectId(userId)},{$set:{jwt:token}},function(err,result){
+						if (err) throw err
+						res.status(200).setHeader('Authorization', `Bearer ${token}`).json({message:'User authenticated'})
+					})
 				}
 			}
+			
+			
+			// if(result.length==0) {
+			// 	res.status(406).json({message:'User is not registered'});
+			// } else {
+			// 	if(result[0].password!=req.body.password) {
+			// 		res.status(406).json({message:'Wrong password'});
+			// 	} else {
+			// 		res.status(200).redirect('../game.html');
+			// 	}
+			// }
 		})
 	})
 });
