@@ -60,17 +60,19 @@ app.post('/api/auth/signup',(req,res)=>{
 });
 
 app.post('/api/auth/login',(req,res)=>{
-	
 	client.connect(function(err,db){
 		const database = db.db("BingoGame");
-		database.collection('users').find({email:req.body.email},{email:1,password:1}).toArray(function(err, result){
-			if (err) throw err
-			if(result.length==0) res.status(406).json({message:'User is not registered'})
-			else{
-				if(result[0].password!=req.body.password) return res.status(406).json({message:'Wrong password'})
-				else res.status(200).json({message:'User authenticated'})
+		database.collection('users').find({email:req.body.email},{email:1,password:1}).toArray(function(err, result){			
+			if(result.length==0) {
+				res.status(406).json({message:'User is not registered'});
+			} else {
+				if(result[0].password!=req.body.password) {
+					res.status(406).json({message:'Wrong password'});
+				} else {
+					res.status(200).redirect('../game.html');
+				}
 			}
-	})
+		})
 	})
 });
 
@@ -83,7 +85,7 @@ app.get('/auth/signin',(req,res)=>{
 })
 
 app.get('/game',(req,res) =>{
-	res.status(200).send(fs.readFileSync('/FrontEnd/html/game.html','utf-8'))
+	res.status(200).send(fs.readFileSync('/FrontEnd/game.html','utf-8'))
 })
 
 
