@@ -4,7 +4,10 @@ const cookieParser=require('cookie-parser');
 const app = express();
 const port= 8080;
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const uri = "mongodb+srv://acharyab2:Iamcosmos@acharyab2.wg17b1q.mongodb.net/?retryWrites=true&w=majority";
+// Abhishek
+const uri = "mongodb+srv://abhishekshrestha5125:9vg9or9p@clustor1a.mrjuys9.mongodb.net/?retryWrites=true&w=majority";
+// Bikash
+// const uri = "mongodb+srv://acharyab2:Iamcosmos@acharyab2.wg17b1q.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
@@ -41,23 +44,72 @@ async function start(){
 }
 start()
 
+/* WEB routes */
+
+app.get('/auth/signup',(req,res)=>{
+	res.status(200).send(fs.readFileSync('./pages/auth/signup.html','utf-8'))
+})
+app.get('/auth/signin',(req,res)=>{
+	res.status(200).send(fs.readFileSync('./pages/auth/signin.html','utf-8'))
+})
+
+
+
+app.get('/game',(req,res) =>{
+	res.status(200).send(fs.readFileSync('/FrontEnd/html/game.html','utf-8'))
+})
+
+/* API routes */
 
 
 app.post('/api/auth/signup',(req,res)=>{
-	const databaseName = "BingoGame";
-	const collectionName = "users";
-	if((find(db,databaseName,collectionName,{username:req.body.email},{email:1}) >0 )) {
-		console.log("User Exists!")
-		res.status(406).json({message:'User already exists'});
-	}
-	else {
-		req.body.password=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'');
-		insert(db,databaseName,collectionName, req.body);
-		res.sendFile(__dirname + "/public/FrontEnd/html/login.html");
-		res.status(201).json({message:'User created'})
-		
-	}
+    // signup the new user
+});
+
+app.post('/api/auth/signin',(req,res)=>{
+// login if the user exit
 })
+
+
+
+app.get('/api/games',(req,res)=>{
+// get the game history
+})
+
+app.post('/api/games',(req,res)=>{
+    // create game
+    })
+    
+app.get('/api/games/gameid',(req,res)=>{
+    // current status of the game
+    })
+
+app.post('/api/games/gameid',(req,res)=>{
+        // join game
+    })
+
+app.put('/api/games/gameid',(req,res)=>{
+
+})
+// Bikash signup api
+// app.post('/api/auth/signup',(req,res)=>{
+// 	const databaseName = "BingoGame";
+// 	const collectionName = "users";
+// 	if((find(db,databaseName,collectionName,{username:req.body.email},{email:1}) >0 )) {
+// 		console.log("User Exists!")
+// 		res.status(406).json({message:'User already exists'});
+// 	}
+// 	else {
+// 		req.body.password=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'');
+// 		insert(db,databaseName,collectionName, req.body);
+// 		res.sendFile(__dirname + "/public/FrontEnd/html/login.html");
+// 		res.status(201).json({message:'User created'})
+		
+// 	}
+// })
+
+// Abhi signup api
+
 
 
 
@@ -90,10 +142,7 @@ app.post('/api/auth/signup',(req,res)=>{
 // 		}
 // 	})
 // })
-app.get('/game',(req,res) =>{
-    res.sendFile('/FrontEnd/html/game.html');
 
-})
 // app.get('/',(req,res)=>{
 //   res.send('index.html');
 // })
