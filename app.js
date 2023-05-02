@@ -2,10 +2,12 @@ const express=require('express');
 const bodyParser = require('body-parser');
 const cookieParser=require('cookie-parser');
 const app = express();
-const port= 8080;
+const port= 3000;
+const url=require('url');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const fs= require('fs');
 // Abhishek
-const uri = "mongodb+srv://abhishekshrestha5125:9vg9or9p@clustor1a.mrjuys9.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://abhishekshrestha5125:10f67hk4AbIdpxfp@clustor1a.mrjuys9.mongodb.net/?retryWrites=true&w=majority";
 // Bikash
 // const uri = "mongodb+srv://acharyab2:Iamcosmos@acharyab2.wg17b1q.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
@@ -18,79 +20,166 @@ const salt='$2b$10$Imnq7Q2r0RS7DqaKV0rpPe';
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(cookieParser());
-var db=null
-async function connect(){
-	let connection=await client.connect()
-	return connection
-}
-async function insert(db,database,collection,document){
-  let dbo=db.db(database)
-  let result=await dbo.collection(collection).insertOne(document)
-  console.log(result)
-  return result;
-}
-async function find(db,database,collection,criteria){
-  let dbo=db.db(database)
-  let result=await dbo.collection(collection).find(criteria).toArray()
-  //console.log(result)
-  return result;
-}
-async function start(){
-	db=await connect()
-	console.log('mongoDB connected')
-	app.listen(port,()=>{
-	  console.log(`Example app listening on port ${port}`)
-	})
-}
-start()
 
-/* WEB routes */
+app.listen(port, () => {
+	console.log(`Server started at ${port}`);
+	
+  });
+
+  // Abhi signup api
+
+app.post('/api/auth/signup',(req,res)=>{
+    // signup the new user
+	client.connect(function(err,db){
+	if(err) throw err
+	const user = {
+		firstname: req.body.firstname,
+		lastname: req.body.lastname,
+		age: req.body.age,
+		email: req.body.email,
+		password: req.body.password,
+		phone: req.body.phone
+	  };
+
+	  console.log(user)
+	  const database = db.db("BingoGame");
+	  database.collection('users').find({email:user.email},{email:1}).toArray(function(err, result){
+		if (err) throw err
+		if(result.length>0) res.status(406).json({message:'User already exists'})
+		else{
+			user.password=bcrypt.hashSync(user.password,salt).replace(`${salt}.`,'');
+			database.collection('users').insertOne(user,function(err,result){
+				if (err) throw err
+				res.status(201).json({message:'User created'});
+				// code for navigating to logn page after user is created
+			})
+		}
+
+	})
+})
+});
+
+app.post('/api/auth/login',(req,res)=>{
+	
+	client.connect(function(err,db){
+		const database = db.db("BingoGame");
+		database.collection('users').find({email:req.body.email},{email:1,password:1}).toArray(function(err, result){
+			if (err) throw err
+			if(result.length==0) res.status(406).json({message:'User is not registered'})
+			else{
+				if(result[0].password!=req.body.password) return res.status(406).json({message:'Wrong password'})
+				else res.status(200).json({message:'User authenticated'})
+			}
+	})
+	})
+});
 
 app.get('/auth/signup',(req,res)=>{
 	res.status(200).send(fs.readFileSync('./pages/auth/signup.html','utf-8'))
 })
+
 app.get('/auth/signin',(req,res)=>{
 	res.status(200).send(fs.readFileSync('./pages/auth/signin.html','utf-8'))
 })
-
-
 
 app.get('/game',(req,res) =>{
 	res.status(200).send(fs.readFileSync('/FrontEnd/html/game.html','utf-8'))
 })
 
+
+
+	
+	
+	
+	app.get('/api/games',(req,res)=>{
+	// get the game history
+	})
+	
+	app.post('/api/games',(req,res)=>{
+		// create game
+		})
+		
+	app.get('/api/games/gameid',(req,res)=>{
+		// current status of the game
+		})
+	
+	app.post('/api/games/gameid',(req,res)=>{
+			// join game
+		})
+	
+	app.put('/api/games/gameid',(req,res)=>{
+	
+	})
+// async function connect(){
+// 	let connection=await client.connect()
+// 	return connection
+// }
+// async function insert(db,database,collection,document){
+//   let dbo=db.db(database)
+//   let result=await dbo.collection(collection).insertOne(document)
+//   console.log(result)
+//   return result;
+// }
+// async function find(db,database,collection,criteria){
+//   let dbo=db.db(database)
+//   let result=await dbo.collection(collection).find(criteria).toArray()
+//   //console.log(result)
+//   return result;
+// }
+// async function start(){
+// 	db=await connect()
+// 	console.log('mongoDB connected')
+// 	app.listen(port,()=>{
+// 	  console.log(`Example app listening on port ${port}`)
+// 	})
+// }
+// start()
+
+/* WEB routes */
+
+
+
+
+
+
+
+
 /* API routes */
 
 
-app.post('/api/auth/signup',(req,res)=>{
-    // signup the new user
-});
+	// 	const db = client.db("BingoGame");
+	// 	const collection = db.collection('users');
+	
+	// 	collection.findOne({ email: user.email }, (err, result) => {
+	// 	  if (err) {
+	// 		console.log(err);
+	// 		client.close();
+	// 		return res.status(500).json({ message: 'Failed to query database' });
+	// 	  }
+	
+	// 	  if (result) {
+	// 		client.close();
+	// 		return res.status(409).json({ message: 'Email already exists' });
+	// 	  }
+	
+	// 	  collection.insertOne(user, (err, result) => {
+	// 		client.close();
+	// 		if (err) {
+	// 		  console.log(err);
+	// 		  return res.status(500).json({ message: 'Failed to insert user into database' });
+	// 		}
+	
+	// 		res.status(201).json({ message: 'User created' });
+	// 	  });
+	// 	});
+	//   });
 
-app.post('/api/auth/signin',(req,res)=>{
-// login if the user exit
-})
+	
+	
 
 
 
-app.get('/api/games',(req,res)=>{
-// get the game history
-})
 
-app.post('/api/games',(req,res)=>{
-    // create game
-    })
-    
-app.get('/api/games/gameid',(req,res)=>{
-    // current status of the game
-    })
-
-app.post('/api/games/gameid',(req,res)=>{
-        // join game
-    })
-
-app.put('/api/games/gameid',(req,res)=>{
-
-})
 // Bikash signup api
 // app.post('/api/auth/signup',(req,res)=>{
 // 	const databaseName = "BingoGame";
@@ -108,7 +197,7 @@ app.put('/api/games/gameid',(req,res)=>{
 // 	}
 // })
 
-// Abhi signup api
+
 
 
 

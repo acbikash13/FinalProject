@@ -74,16 +74,35 @@
     </style>
 </head>
 <body>
+  <!-- <div class="container mt-5" style="min-height: 70vh;">
+    <h1 class="text-center mb-4">Login</h1>
+    <form id="login-form">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="text" class="form-control" id="email" name="email">
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" id="password" name="password">
+      </div>
+
+     
+      <button  type="submit" class="btn btn-primary">  Submit</button>
+      <br><br>
+      <a href="#">Forgot Password?</a>
+      <button type="button" class="btn btn-link" onclick="location.href='signup.html';">Sign Up</button>
+    </form>
+  </div> -->
   <div class="mt-5 homepage-content container">
     <div class="row main">
       <div style="background-image: none;" class="col-lg-5 col-sm-12 bingo-profile"><img class = "exclude-background"height="600px" width="500px" class="shadow-lg rounded" src="../../images/Bingo.png" alt="Bingo Card Picture"></div>
       <div style="background-image: none;" class="col-lg-5 shadow-lg mx-auto  signin col-sm-12 bg-light"> 
-          <form action= "post"class=" login mx-auto">
+          <form id="login-form" class="login mx-auto">
             <div class="form-group">
-              <input type="text" placeholder="Email or username" class="form-control" id="username" name="username">
+              <input id="email" type="text" placeholder="Email or username" class="form-control" id="username" name="username">
             </div>
             <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control" id="password" name="password">
+              <input id="password" type="password" placeholder="Password" class="form-control" id="password" name="password">
             </div>
             <button  type="submit" class="btn login-button btn-info">Login</button>
             <button type="button" class="btn btn-link bg-info text-white" onclick="location.href='signup.html';">Sign in</button>
@@ -92,6 +111,8 @@
     </div>
     </div>
   </div>
+
+
   <!-- jQuery library -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- Popper JS -->
@@ -99,6 +120,7 @@
   <!-- Bootstrap JS -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
-  <script src="../js/script.js"></script>    
+  <!-- <script src="../js/script.js"></script>   -->
+  <script src="../js/auth.js"></script>  
 </body>
 </html>

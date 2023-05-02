@@ -1,25 +1,61 @@
-let form =  document.querySelector("form");
-form.addEventListener("submit", function(event){
+
+// sign up
+
+const form =  document.getElementById('signup-form');
+form.addEventListener("submit", (event)=>{
     event.preventDefault();
-    const first_name = form.firstName.value;
-    const last_name = form.lastName.value;
-    const Age = form.age.value;
-    const Email = form.email.value;
-    const Password = form.password.value;
-    const phone_number = form.phone.value;
-    axios.post('/api/auth/signup',{
-        firstName: first_name,
-        lastname: last_name,
-        age: Age,
-        email: Email,
-        password: Password,
-        phoneNumber:phone_number
+    const firstname = form.firstName.value;
+    const lastname = form.lastName.value;
+    const age = form.age.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    const phone = form.phone.value;
 
-    }).then (function(response){
-        console.log(response);
+    const data = {
+        firstname: firstname,
+        lastname: lastname,
+        age: age,
+        email: email,
+        password: password,
+        phone: phone
+    };
+
+    axios.post('/api/auth/signup', data)
+    .then(response => {
+        alert(response.data.message);
+        form.reset();
     })
-    .catch(function(error){
+    .catch(error => {
         console.log(error);
-    })
+        alert('Failed to signup');
+    });
 
-}) 
+}) ;
+
+
+
+//login
+window.onload = function() {
+const loginForm =  document.getElementById('login-form');
+loginForm.addEventListener("submit", (event)=>{
+    event.preventDefault();
+    const email = loginForm.email.value;
+    const password = loginForm.password.value;
+
+    const data = {
+        email: email,
+        password: password
+    };
+
+    axios.post('/api/auth/login', data)
+    .then(response => {
+        alert(response.data.message);
+        loginForm.reset();
+    })
+    .catch(error => {
+        console.log(error);
+        alert('Failed to login');
+    });
+
+})
+ } ;

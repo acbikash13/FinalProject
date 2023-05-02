@@ -1,10 +1,12 @@
-POST http://localhost:8080/api/auth/signup
+POST http://localhost:3000/api/auth/signup
 Content-Type: application/json
 
 {
     "email": "pragdssdygdn@gmail.com",
     "password":"pragyan123",
-    "firstName" :"Pragyan",
-    "lastName" : "B",
-    "age":22
-}
+    "firstname" :"Pragyan",
+    "lastname" : "B",
+    "age":22,
+    "phone": 8597864583
+
+ }
