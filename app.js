@@ -97,6 +97,7 @@ app.post('/api/auth/login',(req,res)=>{
 //This code block gets the playerState for a user. PlayerState is the game board state for each user
 app.get("/games/:game_id/:user_name", function(req,res){
 	database.collection("Games").findOne(
+		// we just want to retun the document object for a plyer with a username and we want username, playerState, gamewin and the Bingocount
 		{"game.users.username": req.params.user_name, "game.gameId":req.params.game_id},
 		{projection:{_id: 0, "game.users.playerState.$": 1,"game.users.username":1, "game.users.gameWin":1,"game.users.bingoCount":1}},
 		function(err, result) {

@@ -1,5 +1,5 @@
 ### GET REQUEST
-GET http://localhost:3000/games/1234/Manogya
+GET http://localhost:3000/games/1234/Abhishek
 
 
 ### POST REQUEST
