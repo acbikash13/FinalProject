@@ -1,12 +1,26 @@
-POST http://localhost:3000/api/auth/signup
-Content-Type: application/json
+### GET REQUEST
+GET http://localhost:3000/games/1234/Manogya
+
+
+### POST REQUEST
+POST http://localhost:8000
+content-type: application/json
+
+
+{"test":"1232324",
+    "status":"updated"
+}
+
+
+### PUT REQUEST
+PUT http://localhost:8000/assignmentSix/apiRequests/
+content-type: application/json
 
 {
-    "email": "pragdssdygdn@gmail.com",
-    "password":"pragyan123",
-    "firstname" :"Pragyan",
-    "lastname" : "B",
-    "age":22,
-    "phone": 8597864583
+	"gameId": 3456,
+    "username": "Sumiran"
+}
 
- }
+
+### DELETE REQUEST
+DELETE http://localhost:8000/assignmentSixds/apiRequests/644584527726e807c87376bd

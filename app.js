@@ -20,18 +20,24 @@ const salt='$2b$10$Imnq7Q2r0RS7DqaKV0rpPe';
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(cookieParser());
+var database = null;
+client.connect(function(err,db) {
+	if (err) throw err
+	console.log("Connected to the database");
+	database = db.db("BingoGame");
+	console.log(database)
+	app.listen(port, () => {
+		console.log(`Server started at ${port}`);
+		
+	  });
 
-app.listen(port, () => {
-	console.log(`Server started at ${port}`);
-	
-  });
+})
+
 
   // Abhi signup api
 
 app.post('/api/auth/signup',(req,res)=>{
     // signup the new user
-	client.connect(function(err,db){
-	if(err) throw err
 	const user = {
 		firstname: req.body.firstname,
 		lastname: req.body.lastname,
@@ -42,7 +48,6 @@ app.post('/api/auth/signup',(req,res)=>{
 	  };
 
 	  console.log(user)
-	  const database = db.db("BingoGame");
 	  database.collection('users').find({email:user.email},{email:1}).toArray(function(err, result){
 		if (err) throw err
 		if(result.length>0) res.status(406).json({message:'User already exists'})
@@ -56,12 +61,10 @@ app.post('/api/auth/signup',(req,res)=>{
 		}
 
 	})
-})
 });
 
+
 app.post('/api/auth/login',(req,res)=>{
-	client.connect(function(err,db){
-		const database = db.db("BingoGame");
 		database.collection('users').find({email:req.body.email},{email:1,password:1}).toArray(function(err, result){			
 			if (err) throw err
 			if(result.length==0) res.status(406).json({message:'User is not registered'})
@@ -89,7 +92,22 @@ app.post('/api/auth/login',(req,res)=>{
 			// 	}
 			// }
 		})
-	})
+});
+
+//This code block gets the playerState for a user. PlayerState is the game board state for each user
+app.get("/games/:game_id/:user_name", function(req,res){
+	database.collection("Games").findOne(
+		{"game.users.username": req.params.user_name, "game.gameId":req.params.game_id},
+		{projection:{_id: 0, "game.users.playerState.$": 1,"game.users.username":1, "game.users.gameWin":1,"game.users.bingoCount":1}},
+		function(err, result) {
+		  if (err) throw err;
+		  console.log(result);
+		  res.send(result);
+		}
+	  );
+	  
+	  
+	
 });
 
 app.get('/auth/signup',(req,res)=>{
