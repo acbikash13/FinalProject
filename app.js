@@ -25,7 +25,6 @@ client.connect(function(err,db) {
 	if (err) throw err
 	console.log("Connected to the database");
 	database = db.db("BingoGame");
-	console.log(database)
 	app.listen(port, () => {
 		console.log(`Server started at ${port}`);
 		
@@ -95,7 +94,7 @@ app.post('/api/auth/login',(req,res)=>{
 });
 
 //This code block gets the playerState for a user. PlayerState is the game board state for each user
-app.get("/games/:game_id/:user_name", function(req,res){
+app.get("/api/games/:game_id/:user_name", function(req,res){
 	database.collection("Games").findOne(
 		// we just want to retun the document object for a plyer with a username and we want username, playerState, gamewin and the Bingocount
 		{"game.users.username": req.params.user_name, "game.gameId":req.params.game_id},
@@ -106,10 +105,47 @@ app.get("/games/:game_id/:user_name", function(req,res){
 		  res.send(result);
 		}
 	  );
-	  
-	  
-	
 });
+
+// this api serves as to  update  the playerState for each player.
+app.put("/api/games/:game_id", function(req,res){
+	database.collection("Games").findOne(
+		// we just want to retun the document object for every plyer with a username and we want username, playerState, gamewin and the Bingocount
+		{"game.gameId": req.params.game_id},
+		{projection:{_id: 0,"game.users":1,"game.numbers":1}},
+		function(err, result) {
+		  if (err) throw err;
+		  // users holds the data of each user as a list which includes username, their player state and other informations. 
+		  let users = result.game.users;
+		  // this function will find the number in the player state and replace the numbers with 0 for each player; It takes two parameters an array and the number that is being replaced with 0;
+		function replace(playerArray,number){
+			for(let i = 0; i <5 ; i++){
+				for (let j = 0; j< 5; j++){
+					if(playerArray[i][j]===number){
+						playerArray[i][j] = 0;
+					}
+				}
+			}
+			return playerArray;
+		}
+		users.forEach((val)=> {
+			// console.log(val.playerState)
+			let updatedPlayerState = replace(val.playerState,req.body.bingoNumber)
+			console.log(updatedPlayerState);
+			console.log("After logging updated player State")
+			// database.collection("Games").updateOne({"game.gameId":req.params.game_id}, {$set : {"game.users.playerState":updatedPlayerState}})
+			// console.log("after updating")
+
+		});
+		console.log("for each loop done.")
+		let numbersCrossed = result.game.numbers;
+		numbersCrossed.push(req.body.bingoNumber);
+		database.collection("Games").updateOne({"game.gameId":req.params.game_id}, {$set	:{"game.numbers":numbersCrossed}});
+		res.send(result);
+		}
+	  );
+
+})
 
 app.get('/auth/signup',(req,res)=>{
 	res.status(200).send(fs.readFileSync('./pages/auth/signup.html','utf-8'))

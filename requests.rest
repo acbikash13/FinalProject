@@ -1,5 +1,5 @@
 ### GET REQUEST
-GET http://localhost:3000/games/1234/Abhishek
+GET http://localhost:3000/api/games/1234
 
 
 ### POST REQUEST
@@ -13,14 +13,13 @@ content-type: application/json
 
 
 ### PUT REQUEST
-PUT http://localhost:8000/assignmentSix/apiRequests/
+PUT http://localhost:3000/api/games/1234
 content-type: application/json
 
-{
-	"gameId": 3456,
-    "username": "Sumiran"
-}
 
+{
+    "bingoNumber":13
+}
 
 ### DELETE REQUEST
 DELETE http://localhost:8000/assignmentSixds/apiRequests/644584527726e807c87376bd
