@@ -18,7 +18,7 @@ content-type: application/json
 
 
 {
-    "bingoNumber":13
+    "bingoNumber":12
 }
 
 ### DELETE REQUEST

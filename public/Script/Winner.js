@@ -34,7 +34,7 @@ function winner(ourPlayer,username) {
     for(let i = 0; i< 5; i ++){
         let count = 0;
         for(let j = 0; j< 5; j++){
-            if(playerData[i][j] === 1){
+            if(playerData[i][j] === 0){
                 count = count + 1;
             }
             else {
@@ -57,7 +57,7 @@ function winner(ourPlayer,username) {
     for(let column = 0; column< 5; column++){
         let count = 0;
         for(let row = 0; row < 5; row ++){
-            if(playerData[row][column]=== 1){
+            if(playerData[row][column]=== 0){
                 count =  count + 1;
             }
             else {
@@ -80,7 +80,7 @@ function winner(ourPlayer,username) {
     if(Bingo < 5 ){
         for(i= 0; i< 5 ; i++){
             let count = 0;
-            if(playerData[i][i] === 1){
+            if(playerData[i][i] === 0){
                 count = count + 1;
             }
             else{

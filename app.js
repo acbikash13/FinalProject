@@ -116,7 +116,8 @@ app.put("/api/games/:game_id", function(req,res){
 		function(err, result) {
 		  if (err) throw err;
 		  // users holds the data of each user as a list which includes username, their player state and other informations. 
-		  let users = result.game.users;
+		  
+		let users = result.game.users;
 		  // this function will find the number in the player state and replace the numbers with 0 for each player; It takes two parameters an array and the number that is being replaced with 0;
 		function replace(playerArray,number){
 			for(let i = 0; i <5 ; i++){
@@ -128,20 +129,34 @@ app.put("/api/games/:game_id", function(req,res){
 			}
 			return playerArray;
 		}
+
 		users.forEach((val)=> {
 			// console.log(val.playerState)
 			let updatedPlayerState = replace(val.playerState,req.body.bingoNumber)
-			console.log(updatedPlayerState);
-			console.log("After logging updated player State")
-			// database.collection("Games").updateOne({"game.gameId":req.params.game_id}, {$set : {"game.users.playerState":updatedPlayerState}})
-			// console.log("after updating")
+			let userNameForPlayers = val.username
+			console.log(updatedPlayerState,userNameForPlayers);
+			database.collection("Games").updateOne({"game.gameId": req.params.game_id, "game.users.username":userNameForPlayers},{$set: {"game.users.$.playerState":updatedPlayerState}});
+
+			// console.log("After logging updated player State")
+			// database.collection("Games").updateOne(
+			// 	{ "game.gameId": req.params.game_id},
+			// 	{ $set: { "game.users.playerState": updatedPlayerState } },
+			// 	function(err, result) {
+			// 		if (err) throw err;
+			// 		console.log("Player state updated.");
+			// 	}
+			// );
+			
+		// 	// database.collection("Games").updateOne({"game.gameId":req.params.game_id, "game.users.username":}, {$set : {"game.users.playerState":updatedPlayerState}})
+		// 	// console.log("after updating")
 
 		});
-		console.log("for each loop done.")
+		res.send("Successfully updated the player state for the player.")
+
 		let numbersCrossed = result.game.numbers;
 		numbersCrossed.push(req.body.bingoNumber);
-		database.collection("Games").updateOne({"game.gameId":req.params.game_id}, {$set	:{"game.numbers":numbersCrossed}});
-		res.send(result);
+		database.collection("Games").updateOne({"game.gameId":req.params.game_id}, {$set:{"game.numbers":numbersCrossed}});
+
 		}
 	  );
 
