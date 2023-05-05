@@ -32,7 +32,7 @@ client.connect(function(err,db) {
 
 })
 
-
+console.log(__dirname)
   // Abhi signup api
 
 app.post('/api/auth/signup',(req,res)=>{
@@ -152,11 +152,9 @@ app.put("/api/games/:game_id", function(req,res){
 
 		});
 		res.send("Successfully updated the player state for the player.")
-
 		let numbersCrossed = result.game.numbers;
 		numbersCrossed.push(req.body.bingoNumber);
 		database.collection("Games").updateOne({"game.gameId":req.params.game_id}, {$set:{"game.numbers":numbersCrossed}});
-
 		}
 	  );
 
@@ -171,8 +169,21 @@ app.get('/auth/signin',(req,res)=>{
 })
 
 app.get('/game',(req,res) =>{
-	res.status(200).send(fs.readFileSync('/FrontEnd/game.html','utf-8'))
-})
+	res.status(200).sendFile('public/FrontEnd/game.html','utf-8')
+});
+
+//this api gets the users a randomly created 5*5 matrix which will be used to fill the userBoard and also set up in the user's Database
+app.get('/game/getNumbers',function(req,res){
+	var numbers = [];
+	do{
+	   let num = Math.floor(Math.random() * 25 +1);
+	   if(!(numbers.includes(num))){
+		   numbers.push(num);
+	   }
+	} while((numbers.length !==25));
+
+	res.send(numbers)
+});
 
 
 
