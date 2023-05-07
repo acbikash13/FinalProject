@@ -42,6 +42,10 @@ app.get('/login',(req,res) =>{
 	res.sendFile(path.join(__dirname,'/public/FrontEnd/html/login.html'));
 });
 
+app.get('/joinhostGame',(req,res) =>{
+	res.sendFile(path.join(__dirname,'/public/FrontEnd/joinhostGame.html'));
+});
+
 app.post('/api/auth/signup',(req,res)=>{
     // signup the new user
 	const user = {
@@ -73,17 +77,17 @@ app.post('/api/auth/signup',(req,res)=>{
 
 app.post('/api/auth/login',(req,res)=>{
 		database.collection('users').find({email:req.body.email},{email:1,password:1}).toArray(function(err, result){			
-			if (err) throw err
-			if(result.length==0) res.status(406).json({message:'User is not registered'})
+			
+			if(result.length==0) res.status(406).json({message:'User is not registered',redirect: '/login'})
 			else{
-				if(result[0].password != bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')) return res.status(406).json({message:'Wrong password'})
+				if(result[0].password != bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')) return res.status(406).json({message:'Wrong password',redirect: '/login'})
 				else{
 					userId=result[0]._id.toString().replace('New ObjectId("','').replace('")','')
 					console.log(userId)
 					let token=jwt.sign({id:userId},jwtsalt,{expiresIn:jwt_expiration})
 					database.collection('users').updateOne({_id:ObjectId(userId)},{$set:{jwt:token}},function(err,result){
 						if (err) throw err
-						res.status(200).setHeader('Authorization', `Bearer ${token}`).json({message:'User authenticated and redirected to game page', redirect: '../joinhostGame'});
+						res.status(201).setHeader('Authorization', `Bearer ${token}`).json({message:'User authenticated and redirected to game page', redirect: '/joinhostGame'});
 
 						
 					})
