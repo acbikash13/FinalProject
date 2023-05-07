@@ -37,15 +37,10 @@ client.connect(function(err,db) {
 
 })
 
-<<<<<<< HEAD
 //get the homepage login screen
 app.get('/login',(req,res) =>{
 	res.sendFile(path.join(__dirname,'/public/FrontEnd/html/login.html'));
 });
-=======
-// console.log(__dirname)
-  // Abhi signup api
->>>>>>> 13e6b42d0e29f9383ffedc8fe3e11f658e9e75cb
 
 app.post('/api/auth/signup',(req,res)=>{
     // signup the new user
@@ -67,7 +62,7 @@ app.post('/api/auth/signup',(req,res)=>{
 			database.collection('users').insertOne(user,function(err,result){
 				if (err) throw err
 				// code for navigating to logn page after user is created
-				res.send({redirect:'/login'});
+				res.status(201).json({ message: 'User created', redirect: '/login' });
 			})
 		}
 
@@ -88,7 +83,9 @@ app.post('/api/auth/login',(req,res)=>{
 					let token=jwt.sign({id:userId},jwtsalt,{expiresIn:jwt_expiration})
 					database.collection('users').updateOne({_id:ObjectId(userId)},{$set:{jwt:token}},function(err,result){
 						if (err) throw err
-						res.status(200).setHeader('Authorization', `Bearer ${token}`).json({message:'User authenticated'})
+						res.status(200).setHeader('Authorization', `Bearer ${token}`).json({message:'User authenticated and redirected to game page', redirect: '../joinhostGame'});
+
+						
 					})
 				}
 			}

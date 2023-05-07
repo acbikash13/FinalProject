@@ -137,8 +137,9 @@
 
     axios.post('/api/auth/login', data)
     .then(response => {
-        alert(response.data.message);
-        loginForm.reset();
+      alert(response.data.message);
+          window.location = response.data.redirect;
+          form.reset();
         
     })
     .catch(error => {

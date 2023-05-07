@@ -127,17 +127,28 @@
           phone: phone
       };
 
+      // axios.post('/api/auth/signup', data)
+      // .then(response => {
+      //     alert(response.data.message);
+      //     console.log(data.redirect);
+      //     window.location = response.redirect;
+      //     form.reset();
+      // })
+      // .catch(error => {
+      //     console.log(error);
+      //     alert('Failed to signup');
+      // });
+
       axios.post('/api/auth/signup', data)
-      .then(response => {
+        .then(response => {
           alert(response.data.message);
-          console.log(data.redirect);
-          window.location = response.redirect;
+          window.location = response.data.redirect;
           form.reset();
-      })
-      .catch(error => {
-          console.log(error);
-          alert('Failed to signup');
-      });
+        })
+        .catch(error => {
+            console.log(error);
+            alert('Failed to signup');
+        });
 
 }) ;
     </script>
