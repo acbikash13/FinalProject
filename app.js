@@ -23,10 +23,13 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(cookieParser());
 var database = null;
+
+
 client.connect(function(err,db) {
 	if (err) throw err
 	console.log("Connected to the database");
 	database = db.db("BingoGame");
+	console.log(database);
 	app.listen(port, () => {
 		console.log(`Server started at ${port}`);
 		
@@ -34,10 +37,15 @@ client.connect(function(err,db) {
 
 })
 
+<<<<<<< HEAD
 //get the homepage login screen
 app.get('/login',(req,res) =>{
 	res.sendFile(path.join(__dirname,'/public/FrontEnd/html/login.html'));
 });
+=======
+// console.log(__dirname)
+  // Abhi signup api
+>>>>>>> 13e6b42d0e29f9383ffedc8fe3e11f658e9e75cb
 
 app.post('/api/auth/signup',(req,res)=>{
     // signup the new user
