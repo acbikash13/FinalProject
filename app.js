@@ -21,10 +21,13 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(cookieParser());
 var database = null;
+
+
 client.connect(function(err,db) {
 	if (err) throw err
 	console.log("Connected to the database");
 	database = db.db("BingoGame");
+	console.log(database);
 	app.listen(port, () => {
 		console.log(`Server started at ${port}`);
 		
@@ -32,7 +35,7 @@ client.connect(function(err,db) {
 
 })
 
-console.log(__dirname)
+// console.log(__dirname)
   // Abhi signup api
 
 app.post('/api/auth/signup',(req,res)=>{
