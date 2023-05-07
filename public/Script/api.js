@@ -1,16 +1,8 @@
-const gameId= document.getElementById("gameId").innerText;
-// we have to get the element value that is clicked. It is denoted by the bingo_number.
-bingoNumber = 0;
-const clickedNumber = document.
-axios.put(`/api/games/${gameId}`,{
-    "bingoNumber":bingo_number
-})
-.then(function(response){
-    console.log(response);
-})
-.catch(function(error){
-    console.log(error);
-});
+// import { database } from "./database.js";
+
+// axios.get('/games/gameId/player/playerState', function(req,res){
+    
+// })
 
 
 

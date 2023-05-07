@@ -1,6 +1,5 @@
-
 $("#submit").click(function(){
-   const email = document.getElementById("email").innerText;
+    const email = document.getElementById("email").innerText;
     const userName =document.getElementById("userName").innerText;
     const password = document.getElementById("password").innerText; 
 })
@@ -10,11 +9,11 @@ $("#login").click(function(){
 })
 
 
-const axios = require('axios');
 endpoint = 'https://jsonblob.com/api/jsonBlob/1083471290496729088'
 email = document.getElementById("email").innerText;
 userName =document.getElementById("userName").innerText;
 password = document.getElementById("password").innerText; 
+
 axios.get(`${endpoint}`,{}).then(function(response){
     var data = (response.data).players;
     let ourPlayer;
@@ -34,7 +33,7 @@ function winner(ourPlayer,username) {
     for(let i = 0; i< 5; i ++){
         let count = 0;
         for(let j = 0; j< 5; j++){
-            if(playerData[i][j] === 0){
+            if(playerData[i][j] === 1){
                 count = count + 1;
             }
             else {
@@ -57,7 +56,7 @@ function winner(ourPlayer,username) {
     for(let column = 0; column< 5; column++){
         let count = 0;
         for(let row = 0; row < 5; row ++){
-            if(playerData[row][column]=== 0){
+            if(playerData[row][column]=== 1){
                 count =  count + 1;
             }
             else {
@@ -80,7 +79,7 @@ function winner(ourPlayer,username) {
     if(Bingo < 5 ){
         for(i= 0; i< 5 ; i++){
             let count = 0;
-            if(playerData[i][i] === 0){
+            if(playerData[i][i] === 1){
                 count = count + 1;
             }
             else{

@@ -1,62 +1,70 @@
 html {
     height: 90%;
+
 }
 body{
-    background: radial-gradient(#48096d, #8f0962);
+    /* background: radial-gradient(#48096d, #8f0962); */
     height: 100%;
+   
 }
 
 .menu{
-    border: rgb(212, 188, 188) solid 3px;
-    background-color: #48096d;
-    height: 20%;
-    width: 60%;
-    margin-left: 20%;
-    margin-right: 20%;
-    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: auto;
     border-radius: 30px;
 }
-.menu-items{
-    height: 100%;
-    width: 100%
-}
-#pause, #fill,#done{
+ .menu-items{
+    display: felx;
+    gap: 20px;
+    height: 150px;
+    width: 500px;
+} 
+#gameId, #fill,#done{ 
+    margin: 20px;
     margin-top: 15%;
-    height: 70%;
-    width: 100%;
+    height: 80px;
+    width: 120px ;
     cursor: pointer;
     border-radius: 30px;
     text-align: center;
-    font-size: xx-large;
+    font-size:large
 
 }
-.gameBoard{
-height: 70%;
-margin-left: 20%;
-margin-right: 20%;
-border: rgb(212, 188, 188) solid 3px;
-background-image: radial-gradient(rgb(86, 0, 121),rgb(234, 180, 241));
-border-radius: 30px;
-width: 60%;
+ .gameBoard{
+    height: 75%;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 25%;
+    
 
 }
-.cells {
-    height: 100%;
-}
 
-.rows{
-    height: 20%;
-}
-.boxes {
-    width: 20%;
+
+ .rows{
+    display: grid;
+    grid-template-columns: 1.5fr 1.5fr 1.5fr 1.5fr 1.5fr;
+    column-gap: 30px;
+    row-gap: 10px;
+    padding-right:  5px;
+    padding-left: 5px;
+} 
+/* .boxes {
+    width: 100px;
     border-radius: 20px;
+    height: 100px;
+    margin-right: 20px;
+    margin-left: 20px;
 
-}
+
+} */
 
 input{
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
+    width: 90px;
+    height: 90px;
+    border-radius: 100px;
     text-align: center;
     font-size: xx-large;
 }

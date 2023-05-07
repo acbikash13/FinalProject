@@ -1,3 +1,4 @@
+var path =require('path')
 const express=require('express');
 const bodyParser = require('body-parser');
 const cookieParser=require('cookie-parser');
@@ -13,6 +14,7 @@ const uri = "mongodb+srv://acharyab2:Iamcosmos@acharyab2.wg17b1q.mongodb.net/?re
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
+const { dirname } = require('path');
 const jwt_expiration=86400000;
 const jwtsalt='privatekey';
 const salt='$2b$10$Imnq7Q2r0RS7DqaKV0rpPe';
@@ -32,8 +34,10 @@ client.connect(function(err,db) {
 
 })
 
-console.log(__dirname)
-  // Abhi signup api
+//get the homepage login screen
+app.get('/login',(req,res) =>{
+	res.sendFile(path.join(__dirname,'/public/FrontEnd/html/login.html'));
+});
 
 app.post('/api/auth/signup',(req,res)=>{
     // signup the new user
@@ -54,12 +58,13 @@ app.post('/api/auth/signup',(req,res)=>{
 			user.password=bcrypt.hashSync(user.password,salt).replace(`${salt}.`,'');
 			database.collection('users').insertOne(user,function(err,result){
 				if (err) throw err
-				res.status(201).json({message:'User created'});
 				// code for navigating to logn page after user is created
+				res.send({redirect:'/login'});
 			})
 		}
 
-	})
+	})  
+
 });
 
 
@@ -79,17 +84,6 @@ app.post('/api/auth/login',(req,res)=>{
 					})
 				}
 			}
-			
-			
-			// if(result.length==0) {
-			// 	res.status(406).json({message:'User is not registered'});
-			// } else {
-			// 	if(result[0].password!=req.body.password) {
-			// 		res.status(406).json({message:'Wrong password'});
-			// 	} else {
-			// 		res.status(200).redirect('../game.html');
-			// 	}
-			// }
 		})
 });
 
@@ -130,26 +124,13 @@ app.put("/api/games/:game_id", function(req,res){
 			return playerArray;
 		}
 
+		// Now we are updating the playeState for each specific player
 		users.forEach((val)=> {
 			// console.log(val.playerState)
 			let updatedPlayerState = replace(val.playerState,req.body.bingoNumber)
 			let userNameForPlayers = val.username
 			console.log(updatedPlayerState,userNameForPlayers);
 			database.collection("Games").updateOne({"game.gameId": req.params.game_id, "game.users.username":userNameForPlayers},{$set: {"game.users.$.playerState":updatedPlayerState}});
-
-			// console.log("After logging updated player State")
-			// database.collection("Games").updateOne(
-			// 	{ "game.gameId": req.params.game_id},
-			// 	{ $set: { "game.users.playerState": updatedPlayerState } },
-			// 	function(err, result) {
-			// 		if (err) throw err;
-			// 		console.log("Player state updated.");
-			// 	}
-			// );
-			
-		// 	// database.collection("Games").updateOne({"game.gameId":req.params.game_id, "game.users.username":}, {$set : {"game.users.playerState":updatedPlayerState}})
-		// 	// console.log("after updating")
-
 		});
 		res.send("Successfully updated the player state for the player.")
 		let numbersCrossed = result.game.numbers;
@@ -169,7 +150,7 @@ app.get('/auth/signin',(req,res)=>{
 })
 
 app.get('/game',(req,res) =>{
-	res.status(200).sendFile('public/FrontEnd/game.html','utf-8')
+	res.sendfile('./public/Main/Game.html','utf-8')
 });
 
 //this api gets the users a randomly created 5*5 matrix which will be used to fill the userBoard and also set up in the user's Database
@@ -331,9 +312,9 @@ app.get('/game/getNumbers',function(req,res){
 // 	})
 // })
 
-// app.get('/',(req,res)=>{
-//   res.send('index.html');
-// })
+app.get('/',(req,res)=>{
+  res.send('index.html');
+})
 // app.get('/users/:user/userhistory', (res,req)=> {
 //   // replace the tab witht he user history
 //   res.send("User History")
