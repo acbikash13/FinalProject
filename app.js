@@ -177,9 +177,38 @@ app.get('/game/getNumbers',function(req,res){
 	res.send(numbers)
 });
 
-
-
-	
+// create game
+app.post('/api/hostGame',(req,res)=>{
+	let gameDocument =  {
+		"game" : {
+			"gameId":  req.body.gameId,
+			"numbers":[],
+			"users":[
+				{   
+					"username" : req.body.username,
+					"playerState" : [   
+						[0,0,0,0,0],
+						[0,0,0,0,0],
+						[0,0,0,0,0],
+						[0,0,0,0,0],
+						[0,0,0,0,0]
+						],
+						"gameWin" : false,
+						"bingocount" : 0
+				}
+			]
+		}
+	}
+	database.collection("Games").findOne({"game.gameId": req.body.gameId}).toArray(function(result){
+		if (result.length ===1 ){
+			res.send(alert("Please Enter a different Game ID"));
+		}
+		else {
+			database.collection("Games").insertOne(gameDocument);
+		}
+	})
+	console.log(database.collection("Games").findOne({"game.gameId":req.body.gameId}));
+})
 	
 	
 	app.get('/api/games',(req,res)=>{

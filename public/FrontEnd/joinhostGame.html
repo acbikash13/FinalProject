@@ -59,7 +59,7 @@
 						<form id="hostGame">
 							<div class="form-group">
 								<label for="game-name">Game Name:</label>
-								<input type="text" class="form-control" id="game-name" placeholder="Enter game name">
+								<input type="text" name="gameID" class="form-control" id="game-name" placeholder="Enter game name">
 							</div>
 							<button type="submit" class="btn btn-primary">Host Game</button>
 						</form>
@@ -128,7 +128,59 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- 
+    <script src="js/game.js"></script> -->
+    <script>
 
-    <script src="js/game.js"></script>
+      // Get the game name and username from the query string
+      const url = require('url');
+      const urlParts = url.parse(window.location.href, true);
+      const username = urlParts.query.username;
+      let form =  document.getElementById("hostGame");
+      form.addEventListener("submit",function(event){
+        event.preventDefault();
+        const gameCode = form.gameId.value;
+        console.log(username,gameCode)
+        axios.post('/api/hostGame',{
+          gameId:gameCode,
+          username:username
+        }).then(function(response){
+          console.log(response);
+        }).catch(function(error){
+          console.log(error);
+        })
+      })
+
+//         document.addEventListener("DOMContentLoaded", function() {
+// 	// Get the query string parameter 'username'
+//             const urlParams = new URLSearchParams(window.location.search);
+//             const username = urlParams.get('username');
+
+//             // Add an event listener to the 'Join Game' form
+//             const joinGameForm = document.querySelector('#joinGame');
+//             joinGameForm.addEventListener('submit', function(event) {
+//               event.preventDefault();
+//               // Get the values from the form
+//               const gameCode = document.querySelector('#game-code').value;
+//               const playerName = document.querySelector('#player-name').value;
+
+//               // Send a POST request to the server
+//               axios.post('/api/games', {
+//                 gameId: gameCode,
+//                 username: username,
+//                 playerName: playerName
+//               })
+//               .then(function(response) {
+//                 // Handle the response
+//                 console.log(response.data);
+//                 // Redirect to the game page
+         
+//               })
+//               .catch(function(error) {
+//                 console.error(error);
+//               });
+//             });
+// });
+    </script>
   </body>
 </html>
