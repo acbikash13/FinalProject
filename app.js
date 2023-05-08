@@ -84,10 +84,12 @@ app.post('/api/auth/login',(req,res)=>{
 				else{
 					userId=result[0]._id.toString().replace('New ObjectId("','').replace('")','')
 					console.log(userId)
+					const username = result[0].email
 					let token=jwt.sign({id:userId},jwtsalt,{expiresIn:jwt_expiration})
 					database.collection('users').updateOne({_id:ObjectId(userId)},{$set:{jwt:token}},function(err,result){
 						if (err) throw err
-						res.status(201).json({message:'User authenticated and redirected to game page', redirect: '/joinhostGame'});
+						const redirectUrl = `/joinhostGame?username=${encodeURIComponent(username)}`
+						res.status(201).json({message:'User authenticated and redirected to game page', redirect: redirectUrl});
 
 						
 					})

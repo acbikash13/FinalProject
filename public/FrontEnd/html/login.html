@@ -142,7 +142,8 @@
   .then(response => {
     if (response.status === 201) {
       alert(response.data.message);
-      window.location = response.data.redirect;
+      const username = encodeURIComponent(response.data.username); // encode the username for use in the URL
+      window.location = `${response.data.redirect}`; // include username in query string
       form.reset();
     } else {
       alert('Failed to login');
@@ -151,9 +152,23 @@
   .catch(error => {
     console.log(error);
   });
+});
 
-})
- ;
+//     axios.post('/api/auth/login', data)
+//   .then(response => {
+//     if (response.status === 201) {
+//       alert(response.data.message);
+//       window.location = response.data.redirect;
+//       form.reset();
+//     } else {
+//       alert('Failed to login');
+//     }
+//   })
+//   .catch(error => {
+//     console.log(error);
+//   });
+
+// });
   </script>  
 </body>
 </html>
