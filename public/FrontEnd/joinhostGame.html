@@ -131,8 +131,8 @@
     <script>
 
       // host game
-          const form1Button = document.querySelector('#hostGame');
 
+          const form1Button = document.querySelector('#hostGame');
           form1Button.addEventListener('submit', (event) => {
             console.log("host Triggered")
             event.preventDefault(); // prevent default form submission
@@ -145,12 +145,17 @@
             })
             .then(response => {
               // handle response
+              if(response.data.message === 'exists'){
+                alert("Game Name already exists")
+              }
+              else {
+                alert("Successfully created the game")
+              }
               window.location.href = response.data.redirect;
 
             })
             .catch(error => {
               // handle error
-              
               alert("error");
             });
           });

@@ -224,14 +224,13 @@ app.post('/api/hostGame', (req, res) => {
   
 	database.collection("Games").findOne({ "game.gameId": req.body.gameId }, function (err, result) {
 		if (err) throw err;
-	
 		if (result) {
-		  res.send("Please enter a different Game ID");
+			res.status(201).json({message:'exists', redirect: '/joinHostGame'});
 		}
 		else {
 		  database.collection("Games").insertOne(gameDocument, function (err, result) {
 			if (err) throw err;
-			res.status(201).json({message:'Successfully created the game and', redirect: '/game'});
+			res.status(201).json({message:'notexists', redirect: '/game'});
 
 		  });
 		}
