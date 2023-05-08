@@ -194,13 +194,80 @@ app.get('/game/getNumbers',function(req,res){
 		// current status of the game
 		})
 	
-	app.post('/api/games/gameid',(req,res)=>{
+	app.post('/api/joinGame',(req,res)=>{
 			// join game
+
+			app.post('/api/joinGame', (req, res) => {
+				const gameCode = req.body.gameCode;
+				const username = req.body.username;
+				  if (err) throw err;
+				
+				  const games = database.collection('Games');
+				  
+				  games.findOne({gameId: gameCode}, (err, game) => {
+					if (err) throw err;
+					if (!game) {
+					  res.status(404).send('Game not found');
+					} else {
+					  const newUser = {
+						username: username,
+						playerState: [
+						  [0, 0, 0, 0, 0],
+						  [0, 0, 0, 0, 0],
+						  [0, 0, 0, 0, 0],
+						  [0, 0, 0, 0, 0],
+						  [0, 0, 0, 0, 0]
+						],
+						gameWin: false,
+						bingocount: 0
+					  };
+					  game.users.push(newUser);
+					  games.replaceOne({gameId: gameCode}, game, (err, result) => {
+						if (err) throw err;
+						res.send('Successfully joined');
+					  });
+					}
+				  });
+				
+			  });
 		})
+
+		// app.post('/api/games',(req,res)=>{
+		// 	// create game
+		// 	let gameDocument =  {
+		// 		"game" : {
+		// 			"gameId":  req.body.gameId,
+		// 			"numbers":[],
+		// 			"users"🙁
+		// 				{   
+		// 					"username" : req.body.username,
+		// 					"playerState" : [   
+		// 						[0,0,0,0,0],
+		// 						[0,0,0,0,0],
+		// 						[0,0,0,0,0],
+		// 						[0,0,0,0,0],
+		// 						[0,0,0,0,0]
+		// 						],
+		// 						"gameWin" : false,
+		// 						"bingocount" : 0
+		// 				}
+		// 			]
+		// 		}
+		// 	}
+		// 	database.collection("Games").findOne({"game.gameId": req.body.gameId}).toArray(function(result){
+		// 		if (result.length ===1 ){
+		// 			res.send(alert("Please Enter a different Game ID"));
+		// 		}
+		// 		else {
+		// 			database.collection("Games").insertOne(gamedocument);
+		// 		}
+		// 	})
+		// 	console.log(req.body.gameId,req.body.username );
+		// })
 	
-	app.put('/api/games/gameid',(req,res)=>{
+	// app.put('/api/games/gameid',(req,res)=>{
 	
-	})
+	// })
 // async function connect(){
 // 	let connection=await client.connect()
 // 	return connection
