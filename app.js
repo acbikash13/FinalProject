@@ -37,6 +37,28 @@ client.connect(function(err,db) {
 
 })
 
+//contact api
+
+app.post('/api/contact', (req, res) => {
+	const contact = database.collection('contact');
+	
+	const formData = {
+	  name: req.body.name,
+	  email: req.body.email,
+	  message: req.body.message
+	};
+	
+	contact.insertOne(formData, (err, result) => {
+	  if (err) {
+		console.error(err);
+		res.status(500).send('An error occurred while submitting the form');
+	  } else {
+		res.send('Thank you for contacting us');
+	  }
+	});
+  });
+
+
 //get the homepage login screen
 app.get('/login',(req,res) =>{
 	res.sendFile(path.join(__dirname,'/public/FrontEnd/html/login.html'));
