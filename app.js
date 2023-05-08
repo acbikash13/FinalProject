@@ -87,7 +87,7 @@ app.post('/api/auth/login',(req,res)=>{
 					let token=jwt.sign({id:userId},jwtsalt,{expiresIn:jwt_expiration})
 					database.collection('users').updateOne({_id:ObjectId(userId)},{$set:{jwt:token}},function(err,result){
 						if (err) throw err
-						res.status(201).setHeader('Authorization', `Bearer ${token}`).json({message:'User authenticated and redirected to game page', redirect: '/joinhostGame'});
+						res.status(201).json({message:'User authenticated and redirected to game page', redirect: '/joinhostGame'});
 
 						
 					})
