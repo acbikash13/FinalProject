@@ -178,50 +178,43 @@ app.get('/game/getNumbers',function(req,res){
 });
 
 // create game
-app.post('/api/hostGame',(req,res)=>{
-	let gameDocument =  {
-		"game" : {
-			"gameId":  req.body.gameId,
-			"numbers":[],
-			"users":[
-				{   
-					"username" : req.body.username,
-					"playerState" : [   
-						[0,0,0,0,0],
-						[0,0,0,0,0],
-						[0,0,0,0,0],
-						[0,0,0,0,0],
-						[0,0,0,0,0]
-						],
-						"gameWin" : false,
-						"bingocount" : 0
-				}
-			]
-		}
-	}
-	database.collection("Games").findOne({"game.gameId": req.body.gameId}).toArray(function(result){
-		if (result.length ===1 ){
-			res.send(alert("Please Enter a different Game ID"));
+app.post('/api/hostGame', (req, res) => {
+	const gameDocument = {
+	  "game": {
+		"gameId": req.body.gameId,
+		"numbers": [],
+		"users": [
+		  {
+			"username": req.body.username,
+			"playerState": [
+			  [0, 0, 0, 0, 0],
+			  [0, 0, 0, 0, 0],
+			  [0, 0, 0, 0, 0],
+			  [0, 0, 0, 0, 0],
+			  [0, 0, 0, 0, 0]
+			],
+			"gameWin": false,
+			"bingocount": 0
+		  }
+		]
+	  }
+	};
+  
+	database.collection("Games").findOne({ "game.gameId": req.body.gameId }, function (err, result) {
+		if (err) throw err;
+	
+		if (result) {
+		  res.send("Please enter a different Game ID");
 		}
 		else {
-			database.collection("Games").insertOne(gameDocument);
+		  database.collection("Games").insertOne(gameDocument, function (err, result) {
+			if (err) throw err;
+			res.send("Successfully created a new game");
+		  });
 		}
-	})
-	console.log(database.collection("Games").findOne({"game.gameId":req.body.gameId}));
-})
+	  });
+	});
 	
-	
-	app.get('/api/games',(req,res)=>{
-	// get the game history
-	})
-	
-	app.post('/api/games',(req,res)=>{
-		// create game
-		})
-		
-	app.get('/api/games/gameid',(req,res)=>{
-		// current status of the game
-		})
 	
 	app.post('/api/joinGame',(req,res)=>{
 			// join game
@@ -260,6 +253,17 @@ app.post('/api/hostGame',(req,res)=>{
 				
 			  });
 		})
+
+
+
+		app.get('/api/games',(req,res)=>{
+			// get the game history
+			})
+			
+				
+			app.get('/api/games/gameid',(req,res)=>{
+				// current status of the game
+				})
 
 		// app.post('/api/games',(req,res)=>{
 		// 	// create game
