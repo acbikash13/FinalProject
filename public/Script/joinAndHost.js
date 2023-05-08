@@ -1,0 +1,1 @@
+let hostFrom = document.getElementById("#hostGame")
