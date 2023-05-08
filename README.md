@@ -26,8 +26,8 @@ Setup and Configuration
 Clone the repository to your local machine.
 Install Node.js and MongoDB if you haven't already.
 Navigate to the project directory using a command line interface.
-Start the application by running the command: npm start.
-Access the application in your web browser at http://localhost:3000.
+Start the application by running the command: node app
+Access the application in your web browser at http://localhost:3000 and follow the instructions
 Project Structure
 //This part describes the structure of our project. Example is shown below: 
 
