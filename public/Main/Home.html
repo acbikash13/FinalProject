@@ -26,12 +26,8 @@
             background-color:thistle;
             padding: 50px;
         }
-        .contact {
-            background-color: whitesmoke;
-            padding: 50px;
-        }
         .Info{
-            background-color:thistle;
+            background-color:whitesmoke;
             padding: 50px;
         }
         body{
@@ -95,13 +91,13 @@
     <div class = "Navigation">
         <div class = "container">
             <nav>
-                <ul>
-                  <li><a href=".welcome">Start</a></li>
-                  <li><a href=".content"> About Us</a></li>
-                  <li><a href=".GameRules">Game Rules</a></li>
-                  <li><a href=".contact">Contact</a></li>
-                  <li><a href=".Info"> Info </a></li>
-                </ul>
+                <nav>
+                    <a href="" onclick="show('welcome')">Start</a>
+                    <a href="#" onclick="showClass('content')">About us</a>
+                    <a href="#" onclick="showClass('GameRules')">Game Rules</a>
+                    <a href="/Users/manogyaaryal/Desktop/FinalProject-1/public/FrontEnd/html/contact.html" onclick="showClass('contact')">Contact</a>
+                    <a href="#" onclick="showClass('Info')">Info</a>
+                  </nav>
             </nav>
         </div>
     </div>
@@ -111,8 +107,8 @@
         <div class="container">
             <h1 class="display-3">Welcome to the Bingo Game Website</h1>
             <p class="lead">This is the homepage for a bingo game created by students of ASE 220 class for their final project.</p>
-            <a class="btn btn-primary btn-lg" href="/Users/manogyaaryal/Desktop/FinalProject/public/FrontEnd/html/login.html" role="button"> Login </a>
-            <a class="btn btn-primary btn-lg" href="/Users/manogyaaryal/Desktop/FinalProject/public/Form/SignUp.html" role="button"> Sign Up</a>
+            <a class="btn btn-primary btn-lg" href="/Users/manogyaaryal/Desktop/FinalProject-1/public/FrontEnd/html/login.html" role="button"> Login </a>
+            <a class="btn btn-primary btn-lg" href="/Users/manogyaaryal/Desktop/FinalProject-1/public/FrontEnd/html/SignIn.html" role="button"> Sign Up</a>
         </div>
     </div>
     
@@ -148,26 +144,6 @@
         </div>
     </div> 
 
-    <div class="contact">
-        <div class="container">
-            <h2 id="contact">Contact the makers</h2>
-            <form>
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Message:</label>
-                    <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
-    </div>
     
             <div class = "Info">
                 <div class = "container">
@@ -186,7 +162,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <p>&copy; 2023 Bingo Game. All Rights Reserved.</p>
+                    <p style="background-color: thistle; color: #333;">&copy; 2023 Bingo Game. All Rights Reserved.</p>
                 </div>
             </div>
         </div>
