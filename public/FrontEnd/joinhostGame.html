@@ -61,7 +61,7 @@
 								<label for="game-name">Game Name:</label>
 								<input type="text" class="form-control" id="game-name" placeholder="Enter game name">
 							</div>
-							<button type="submit" class="btn btn-primary">Host Game</button>
+							<button type="submit" id="host-game"  class="btn btn-primary">Host Game</button>
 						</form>
 					</div>
 				</div>
@@ -70,7 +70,7 @@
 				<div class="card">
 					<div class="card-body">
 						<h5 class="card-title">Join a Game</h5>
-						<form>
+						<form id="joinGame">
 							<div class="form-group">
 								<label for="game-code">Game Code:</label>
 								<input type="text" class="form-control" id="game-code" placeholder="Enter game code">
@@ -81,7 +81,7 @@
 								<label for="player-name">Player Name:</label>
 								<input type="text" class="form-control" id="player-name" placeholder="Enter your name">
 							</div> -->
-							<button type="submit" class="btn btn-primary">Join Game</button>
+							<button type="submit" id="join-game" class="btn btn-primary">Join Game</button>
 						</form>
 					</div>
 				</div>
@@ -131,10 +131,11 @@
     <script>
 
       // host game
-          const form = document.querySelector('#hostGame');
-          form.addEventListener('submit', (event) => {
+          const form1Button = document.querySelector('#hostGame');
+
+          form1Button.addEventListener('submit', (event) => {
+            console.log("host Triggered")
             event.preventDefault(); // prevent default form submission
-            
             const gameName = document.querySelector('#game-name').value;
             const username = new URLSearchParams(window.location.search).get('username');
             
@@ -144,7 +145,8 @@
             })
             .then(response => {
               // handle response
-              alert(response.data);
+              window.location.href = response.data.redirect;
+
             })
             .catch(error => {
               // handle error
@@ -152,6 +154,30 @@
               alert("error");
             });
           });
+          // const form2Btn = document.querySelector("#joinGame");
+          // form2Btn.addEventListener('submit', (event) => {
+          //   console.log("join Triggered")
+          //   event.preventDefault();
+          //   console.log("working")
+          //   const gameName = document.querySelector('#game-code').value;
+          //   const username = new URLSearchParams(window.location.search).get('username');
+          //   console.log(username)
+          //   console.log(gameName)
+          //   axios.post('/api/joinGame', {
+          //     gameId: gameName,
+          //     username: username
+          //   })
+          //   .then(response => {
+          //     // handle response
+          //     alert(response.data);
+          //   })
+          //   .catch(error => {
+          //     // handle error
+              
+          //     alert("error");
+          //   });
+          // });
+
 
 
 

@@ -161,7 +161,7 @@ app.get('/auth/signin',(req,res)=>{
 })
 
 app.get('/game',(req,res) =>{
-	res.sendfile('./public/Main/Game.html','utf-8')
+	res.status(200).send(fs.readFileSync('./public/Main/Game.html','utf-8'))
 });
 
 //this api gets the users a randomly created 5*5 matrix which will be used to fill the userBoard and also set up in the user's Database
@@ -209,7 +209,8 @@ app.post('/api/hostGame', (req, res) => {
 		else {
 		  database.collection("Games").insertOne(gameDocument, function (err, result) {
 			if (err) throw err;
-			res.send("Successfully created a new game");
+			res.status(201).json({message:'Successfully created the game and', redirect: '/game'});
+
 		  });
 		}
 	  });
@@ -218,17 +219,16 @@ app.post('/api/hostGame', (req, res) => {
 	
 	app.post('/api/joinGame',(req,res)=>{
 			// join game
-
 			app.post('/api/joinGame', (req, res) => {
-				const gameCode = req.body.gameCode;
+				const gameCode = req.body.gameID;
 				const username = req.body.username;
-				  if (err) throw err;
-				
+				  if (err) res.send(err);
+					res.send("res entered")
 				  const games = database.collection('Games');
 				  
 				  games.findOne({gameId: gameCode}, (err, game) => {
 					if (err) throw err;
-					if (!game) {
+					if (game.length==0) {
 					  res.status(404).send('Game not found');
 					} else {
 					  const newUser = {
@@ -246,7 +246,7 @@ app.post('/api/hostGame', (req, res) => {
 					  game.users.push(newUser);
 					  games.replaceOne({gameId: gameCode}, game, (err, result) => {
 						if (err) throw err;
-						res.send('Successfully joined');
+						res.status(201).json({message:'Successfully joined the game', redirect: '/game'})
 					  });
 					}
 				  });
